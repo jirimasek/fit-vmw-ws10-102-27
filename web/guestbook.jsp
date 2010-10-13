@@ -9,6 +9,7 @@
 
 <html>
   <head>
+      <meta name="author" content="masekji4" />
     <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
   </head>
 

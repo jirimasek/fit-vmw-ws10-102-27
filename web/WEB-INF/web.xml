@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <display-name>Flickr - feature-based reranking</display-name>
+    <servlet>
+        <servlet-name>SearchServlet</servlet-name>
+        <servlet-class>cz.cvut.fit.vmw.ws10_102_27.controller.SearchServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchServlet</servlet-name>
+        <url-pattern>/search</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
-        <welcome-file>helloworld.jsp</welcome-file>
+        <welcome-file>search.jsp</welcome-file>
     </welcome-file-list>
 </web-app>

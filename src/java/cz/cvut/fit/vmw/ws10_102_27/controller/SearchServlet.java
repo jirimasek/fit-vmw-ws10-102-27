@@ -5,7 +5,11 @@ import com.aetrion.flickr.FlickrException;
 import com.aetrion.flickr.REST;
 import com.aetrion.flickr.photos.PhotoList;
 import cz.cvut.fit.vmw.ws10_102_27.model.FlickrAPI;
+import cz.cvut.fit.vmw.ws10_102_27.ranking.ColorRank;
+import cz.cvut.fit.vmw.ws10_102_27.ranking.ColorSorter;
+import cz.cvut.fit.vmw.ws10_102_27.ranking.RankedPhoto;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,8 +23,6 @@ import org.xml.sax.SAXException;
  */
 public class SearchServlet extends HttpServlet {
 
-    static String apiKey = "aa864b3f386a237b030dcfa76738b26d";
-    static String sharedSecret = "aab2da1f8632c7c3";
     Flickr f;
     REST rest;
 
@@ -49,8 +51,13 @@ public class SearchServlet extends HttpServlet {
         FlickrAPI flickrAPI = FlickrAPI.getInstance();
         try {
             PhotoList result = flickrAPI.search(request.getParameter("q"), 25, 1);
-
-            request.setAttribute("result", result);;
+            ColorSorter cs = new ColorSorter(result, new ColorRank(128, 128, 0));
+            List<RankedPhoto> res = cs.sort();
+            PhotoList pl = new PhotoList();
+            for (RankedPhoto r : res) {
+                pl.add(r.getPhoto());
+            }
+            request.setAttribute("result", pl);
         } catch (SAXException ex) {
         } catch (FlickrException ex) {
         }

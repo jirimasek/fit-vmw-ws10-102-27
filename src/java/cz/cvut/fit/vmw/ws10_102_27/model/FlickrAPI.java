@@ -19,8 +19,8 @@ import org.xml.sax.SAXException;
 public class FlickrAPI {
 
     private static FlickrAPI instance;
-    private static String key = "aa864b3f386a237b030dcfa76738b26d";
-    private static String secret = "aab2da1f8632c7c3";
+    public static final String API_KEY = "aa864b3f386a237b030dcfa76738b26d";
+    public static final String SHARED_SECRET = "aab2da1f8632c7c3";
     Flickr flickr;
     REST rest;
     Hashtable<CacheKey, PhotoList> cache;
@@ -30,7 +30,7 @@ public class FlickrAPI {
      */
     private FlickrAPI() {
         try {
-            flickr = new Flickr(key, secret, new REST());
+            flickr = new Flickr(API_KEY, SHARED_SECRET, new REST());
         } catch (ParserConfigurationException ex) {
         }
 

@@ -51,7 +51,7 @@ public class SearchServlet extends HttpServlet {
         FlickrAPI flickrAPI = FlickrAPI.getInstance();
         try {
             PhotoList result = flickrAPI.search(request.getParameter("q"), 25, 1);
-            ColorSorter cs = new ColorSorter(result, new ColorRank(128, 128, 0));
+            ColorSorter cs = new ColorSorter(result, new ColorRank(128, 0, 0));
             List<RankedPhoto> res = cs.sort();
             PhotoList pl = new PhotoList();
             for (RankedPhoto r : res) {

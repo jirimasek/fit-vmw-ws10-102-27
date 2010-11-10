@@ -22,6 +22,18 @@
 
         <form method="get" action="/search">
             <input id="q" name="q" type="text" />
+            <input id="red" name="c" type="radio" value="red" checked="checked" /><label for="red"><span>Red</span></label>
+            <input id="orange" name="c" type="radio" value="orange" /><label for="orange"><span>Orange</span></label>
+            <input id="yellow" name="c" type="radio" value="yellow" /><label for="yellow"><span>Yellow</span></label>
+            <input id="green" name="c" type="radio" value="green" /><label for="green"><span>Green</span></label>
+            <input id="teal" name="c" type="radio" value="teal" /><label for="teal"><span>Teal</span></label>
+            <input id="blue" name="c" type="radio" value="blue" /><label for="blue"><span>Blue</span></label>
+            <input id="purple" name="c" type="radio" value="purple" /><label for="purple"><span>Purple</span></label>
+            <input id="pink" name="c" type="radio" value="pink" /><label for="pink"><span>Pink</span></label>
+            <input id="white" name="c" type="radio" value="white" /><label for="white"><span>White</span></label>
+            <input id="gray" name="c" type="radio" value="gray" /><label for="gray"><span>Gray</span></label>
+            <input id="black" name="c" type="radio" value="black" /><label for="black"><span>Black</span></label>
+            <input id="brown" name="c" type="radio" value="brown" /><label for="brown"><span>Brown</span></label>
             <input id="submit" name="submit" type="submit" value="Search"/>
         </form>
 

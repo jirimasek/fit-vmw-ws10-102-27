@@ -30,7 +30,7 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
     /**
      * This constant represents how many siblings in histogram we take into account.
      */
-    private static final int EPSILON = 10;
+    private static final int EPSILON = 256;
     /**
      * Total distance from referential color.
      */
@@ -59,7 +59,7 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
         if (histogram == null) {
             histogram = new PhotoHistogram();
             saveHistogram = true;
-            System.out.println("Histogram not from DB, not counting");
+            System.out.println("Histogram not from DB, counting");
         } else {
             System.out.println("Histogram from DB, not counting");
         }
@@ -87,7 +87,7 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
      * @param color RED, GREEN or BLUE (constants from PhotoHistogram class)
      * @return arithmetical average of all values in given range
      */
-    private int countColorAverage(int baseIndex, int color) {
+    private double countColorAverage(int baseIndex, int color) {
         int sum = 0;
         int values = 0;
         for (int i = baseIndex - EPSILON; i < baseIndex + EPSILON; i++) {
@@ -97,11 +97,11 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
             if (i < 0) {
                 continue;
             }
-            sum += (histogram.getValue(color, i) * (1 / (i - baseIndex == 0 ? 1 : Math.abs(i - baseIndex))));
+            sum += (histogram.getValue(color, i) * (i - baseIndex == 0 ? 1 : Math.abs(i - baseIndex)));
             ++values;
         }
         //System.out.println("average:"+color+" "+sum/values);
-        return sum / values;
+        return (sum / values == 0.0 ? Double.MAX_VALUE : sum / values);
     }
 
     /**

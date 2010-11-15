@@ -71,13 +71,14 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
      * @param rank Referential color
      */
     public void countDistance(ColorRank rank) {
-        double redAvg = countColorAverage(rank.getRed(), PhotoHistogram.RED);
-        double greenAvg = countColorAverage(rank.getGreen(), PhotoHistogram.GREEN);
-        double blueAvg = countColorAverage(rank.getBlue(), PhotoHistogram.BLUE);
-        // euclidian distance
-        // sqrt[ (redAvg-rank.red)^2 + (greenAvg-rank.green)^2 + (blueAvg-rank.blue)^2 ]
-        distance = Math.sqrt(Math.pow(redAvg - rank.getRed(), 2) + Math.pow(greenAvg - rank.getGreen(), 2) + Math.pow(blueAvg - rank.getBlue(), 2));
-        //System.out.println(photo.getSmallUrl()+" distance:"+distance);
+//        double redAvg = countColorAverage(rank.getRed(), PhotoHistogram.RED);
+//        double greenAvg = countColorAverage(rank.getGreen(), PhotoHistogram.GREEN);
+//        double blueAvg = countColorAverage(rank.getBlue(), PhotoHistogram.BLUE);
+//        // euclidian distance
+//        // sqrt[ (redAvg-rank.red)^2 + (greenAvg-rank.green)^2 + (blueAvg-rank.blue)^2 ]
+//        distance = Math.sqrt(Math.pow(redAvg - rank.getRed(), 2) + Math.pow(greenAvg - rank.getGreen(), 2) + Math.pow(blueAvg - rank.getBlue(), 2));
+//        //System.out.println(photo.getSmallUrl()+" distance:"+distance);
+        distance = Math.sqrt(Math.pow(histogram.getRedMax() - rank.getRed(), 2) + Math.pow(histogram.getGreenMax() - rank.getGreen(), 2) + Math.pow(histogram.getBlueMax() - rank.getBlue(), 2));
     }
 
     /**
@@ -148,6 +149,30 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
             histogram.incrementValue(PhotoHistogram.GREEN, (argb & 0x0000FF00) >> 8);
             histogram.incrementValue(PhotoHistogram.BLUE, (argb & 0x000000FF));
         }
+
+        int redMax = histogram.getValue(0, 0);
+        int greenMax = histogram.getValue(1, 0);
+        int blueMax = histogram.getValue(2, 0);
+
+        for (int i = 0; i < PhotoHistogram.HIST_SIZE; i++) {
+            if (histogram.getValue(0, i) > redMax) {
+                redMax = histogram.getValue(0, i);
+                histogram.setRedMax(i);
+            }
+            if (histogram.getValue(1, i) > greenMax) {
+                greenMax = histogram.getValue(1, i);
+                histogram.setGreenMax(i);
+            }
+            if (histogram.getValue(2, i) > blueMax) {
+                blueMax = histogram.getValue(2, i);
+                histogram.setBlueMax(i);
+            }
+        }
+        System.out.println("redmax" + histogram.getRedMax());
+        System.out.println("greenmax" + histogram.getGreenMax());
+        System.out.println("bluemax" + histogram.getBlueMax());
+
+
     }
 
     public Photo getPhoto() {

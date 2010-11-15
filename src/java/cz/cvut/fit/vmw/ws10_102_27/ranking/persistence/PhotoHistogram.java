@@ -34,6 +34,12 @@ public class PhotoHistogram {
     private int[] greenHistogram = new int[HIST_SIZE];
     @Persistent
     private int[] blueHistogram = new int[HIST_SIZE];
+    @Persistent
+    private int redMax;
+    @Persistent
+    private int greenMax;
+    @Persistent
+    private int blueMax;
 
     public PhotoHistogram() {
     }
@@ -105,5 +111,29 @@ public class PhotoHistogram {
 
     public void setRedHistogram(int[] redHistogram) {
         this.redHistogram = redHistogram;
+    }
+
+    public int getBlueMax() {
+        return blueMax;
+    }
+
+    public void setBlueMax(int blueMax) {
+        this.blueMax = blueMax;
+    }
+
+    public int getGreenMax() {
+        return greenMax;
+    }
+
+    public void setGreenMax(int greenMax) {
+        this.greenMax = greenMax;
+    }
+
+    public int getRedMax() {
+        return redMax;
+    }
+
+    public void setRedMax(int redMax) {
+        this.redMax = redMax;
     }
 }

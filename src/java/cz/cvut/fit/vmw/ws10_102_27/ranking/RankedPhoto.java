@@ -71,14 +71,14 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
      * @param rank Referential color
      */
     public void countDistance(ColorRank rank) {
-//        double redAvg = countColorAverage(rank.getRed(), PhotoHistogram.RED);
-//        double greenAvg = countColorAverage(rank.getGreen(), PhotoHistogram.GREEN);
-//        double blueAvg = countColorAverage(rank.getBlue(), PhotoHistogram.BLUE);
+        double redAvg = countColorAverage(histogram.getRedMax(), PhotoHistogram.RED);
+        double greenAvg = countColorAverage(histogram.getGreenMax(), PhotoHistogram.GREEN);
+        double blueAvg = countColorAverage(histogram.getBlueMax(), PhotoHistogram.BLUE);
 //        // euclidian distance
 //        // sqrt[ (redAvg-rank.red)^2 + (greenAvg-rank.green)^2 + (blueAvg-rank.blue)^2 ]
-//        distance = Math.sqrt(Math.pow(redAvg - rank.getRed(), 2) + Math.pow(greenAvg - rank.getGreen(), 2) + Math.pow(blueAvg - rank.getBlue(), 2));
-//        //System.out.println(photo.getSmallUrl()+" distance:"+distance);
-        distance = Math.sqrt(Math.pow(histogram.getRedMax() - rank.getRed(), 2) + Math.pow(histogram.getGreenMax() - rank.getGreen(), 2) + Math.pow(histogram.getBlueMax() - rank.getBlue(), 2));
+        distance = Math.sqrt(Math.pow(redAvg - rank.getRed(), 2) + Math.pow(greenAvg - rank.getGreen(), 2) + Math.pow(blueAvg - rank.getBlue(), 2));
+        System.out.println(photo.getSmallUrl()+" distance:"+distance);
+//        distance = Math.sqrt(Math.pow(histogram.getRedMax() - rank.getRed(), 2) + Math.pow(histogram.getGreenMax() - rank.getGreen(), 2) + Math.pow(histogram.getBlueMax() - rank.getBlue(), 2));
     }
 
     /**
@@ -98,7 +98,7 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
             if (i < 0) {
                 continue;
             }
-            sum += (histogram.getValue(color, i) * (i - baseIndex == 0 ? 1 : Math.abs(i - baseIndex)));
+            sum += (histogram.getValue(color, i) * ( 1/ (i - baseIndex == 0 ? 1 : Math.abs(i - baseIndex))) );
             ++values;
         }
         //System.out.println("average:"+color+" "+sum/values);
@@ -171,8 +171,6 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
         System.out.println("redmax" + histogram.getRedMax());
         System.out.println("greenmax" + histogram.getGreenMax());
         System.out.println("bluemax" + histogram.getBlueMax());
-
-
     }
 
     public Photo getPhoto() {

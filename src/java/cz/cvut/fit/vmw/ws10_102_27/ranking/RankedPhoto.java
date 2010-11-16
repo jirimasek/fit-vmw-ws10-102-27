@@ -13,6 +13,7 @@ import cz.cvut.fit.vmw.ws10_102_27.model.FlickrAPI;
 import cz.cvut.fit.vmw.ws10_102_27.ranking.decoder.JPEGDecoder;
 import cz.cvut.fit.vmw.ws10_102_27.ranking.decoder.MyPixelArray;
 import cz.cvut.fit.vmw.ws10_102_27.ranking.persistence.HistogramDao;
+import cz.cvut.fit.vmw.ws10_102_27.ranking.persistence.MultiColorHistogram;
 import cz.cvut.fit.vmw.ws10_102_27.ranking.persistence.PhotoHistogram;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,7 +43,7 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
     /**
      * Histogram object, may be counted, or retrieved from database
      */
-    private PhotoHistogram histogram;
+    private MultiColorHistogram histogram;
     /**
      * Flag whether the histogram object has to be persisted after counting
      */
@@ -57,7 +58,7 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
         this.photo = photo;
         histogram = HistogramDao.getInstance().getHistogram(photo.getId());
         if (histogram == null) {
-            histogram = new PhotoHistogram();
+            histogram = new MultiColorHistogram();
             saveHistogram = true;
             System.out.println("Histogram not from DB, counting");
         } else {
@@ -71,37 +72,18 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
      * @param rank Referential color
      */
     public void countDistance(ColorRank rank) {
-        double redAvg = countColorAverage(rank.getRed(), PhotoHistogram.RED);
-        double greenAvg = countColorAverage(rank.getGreen(), PhotoHistogram.GREEN);
-        double blueAvg = countColorAverage(rank.getBlue(), PhotoHistogram.BLUE);
-        // euclidian distance
-        // sqrt[ (redAvg-rank.red)^2 + (greenAvg-rank.green)^2 + (blueAvg-rank.blue)^2 ]
-        distance = Math.sqrt(Math.pow(redAvg - rank.getRed(), 2) + Math.pow(greenAvg - rank.getGreen(), 2) + Math.pow(blueAvg - rank.getBlue(), 2));
-        //System.out.println(photo.getSmallUrl()+" distance:"+distance);
-    }
-
-    /**
-     * Shorthand to counting average number from a range of histogram. Range is of
-     * size baseIndex-EPSILON..baseIndex+EPSILON. Boundaries (0, HIST_SIZE) are checked.
-     * @param baseIndex Center of the range of the histogram.
-     * @param color RED, GREEN or BLUE (constants from PhotoHistogram class)
-     * @return arithmetical average of all values in given range
-     */
-    private double countColorAverage(int baseIndex, int color) {
-        int sum = 0;
-        int values = 0;
-        for (int i = baseIndex - EPSILON; i < baseIndex + EPSILON; i++) {
-            if (i >= PhotoHistogram.HIST_SIZE) {
-                break;
+        int rankindex = ColorMapping.getNearestColorIndex(rank.getRed(), rank.getGreen(), rank.getBlue());
+        int maxindex = 0;
+        int max = histogram.get(0);
+        for (int i = 0; i < MultiColorHistogram.MAX_SIZE; i++) {
+            if (histogram.get(i) > max) {
+                maxindex = i;
+                max = histogram.get(i);
             }
-            if (i < 0) {
-                continue;
-            }
-            sum += (histogram.getValue(color, i) * (i - baseIndex == 0 ? 1 : Math.abs(i - baseIndex)));
-            ++values;
         }
-        //System.out.println("average:"+color+" "+sum/values);
-        return (sum / values == 0.0 ? Double.MAX_VALUE : sum / values);
+        //System.out.println(rankindex+":"+maxindex);
+        //distance = Math.sqrt( Math.pow( (maxindex - rankindex), 2) + () );
+        distance = Math.sqrt( Math.pow(maxindex - rankindex, 2) );
     }
 
     /**
@@ -144,10 +126,15 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
         int argb;
         for (int i = 0; i < a.getHeight() * a.getWidth(); i++) {
             argb = a.pix[i];
-            histogram.incrementValue(PhotoHistogram.RED, (argb & 0x00FF0000) >> 16);
-            histogram.incrementValue(PhotoHistogram.GREEN, (argb & 0x0000FF00) >> 8);
-            histogram.incrementValue(PhotoHistogram.BLUE, (argb & 0x000000FF));
+            int red   = (argb & 0x00FF0000) >> 16;
+            int green = (argb & 0x0000FF00) >> 8;
+            int blue  = (argb & 0x000000FF);
+            // spocitat nejblizsi barvu v ColorMapping
+            //System.out.println(red+":"+green+":"+blue);
+            int index = ColorMapping.getNearestColorIndex(red, green, blue);
+            histogram.increment(index);
         }
+
     }
 
     public Photo getPhoto() {

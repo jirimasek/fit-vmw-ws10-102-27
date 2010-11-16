@@ -36,8 +36,8 @@ public class HistogramDao {
      * @param ph
      * @param photoId
      */
-    public void saveHistogram(PhotoHistogram ph, String photoId) {
-        Key k = KeyFactory.createKey(PhotoHistogram.class.getSimpleName(), photoId);
+    public void saveHistogram(MultiColorHistogram ph, String photoId) {
+        Key k = KeyFactory.createKey(MultiColorHistogram.class.getSimpleName(), photoId);
         ph.setKey(k);
         PersistenceManager pm = PMF.get().getPersistenceManager();
         pm.makePersistent(ph);
@@ -50,11 +50,11 @@ public class HistogramDao {
      * @param photoId flickr photoId
      * @return PhotoHistogram or null
      */
-    public PhotoHistogram getHistogram(String photoId) {
+    public MultiColorHistogram getHistogram(String photoId) {
         PersistenceManager pm = PMF.get().getPersistenceManager();
         try {
-            Key k = KeyFactory.createKey(PhotoHistogram.class.getSimpleName(), photoId);
-            return pm.getObjectById(PhotoHistogram.class, k);
+            Key k = KeyFactory.createKey(MultiColorHistogram.class.getSimpleName(), photoId);
+            return pm.getObjectById(MultiColorHistogram.class, k);
         } catch (JDOObjectNotFoundException ex) {
             return null;
         } finally {

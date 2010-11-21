@@ -44,15 +44,16 @@ public class PhotoHistogram {
      * @param index
      */
     public void incrementValue(int color, int index) {
+       int realindex = index/(256/HIST_SIZE);
         switch (color) {
             case RED:
-                redHistogram[index]++;
+                redHistogram[realindex]++;
                 break;
             case GREEN:
-                greenHistogram[index]++;
+                greenHistogram[realindex]++;
                 break;
             case BLUE:
-                blueHistogram[index]++;
+                blueHistogram[realindex]++;
                 break;
         }
     }
@@ -64,13 +65,14 @@ public class PhotoHistogram {
      * @return value
      */
     public int getValue(int color, int index) {
+        int realindex = index/(256/HIST_SIZE);
         switch (color) {
             case RED:
-                return redHistogram[index];
+                return redHistogram[realindex];
             case GREEN:
-                return greenHistogram[index];
+                return greenHistogram[realindex];
             case BLUE:
-                return blueHistogram[index];
+                return blueHistogram[realindex];
         }
         return 0;
     }

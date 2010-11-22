@@ -71,39 +71,7 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
      * @param rank Referential color
      */
     public void countDistance(ColorRank rank) {
-//        double redAvg = countColorAverage(histogram.getRedMax(), PhotoHistogram.RED);
-//        double greenAvg = countColorAverage(histogram.getGreenMax(), PhotoHistogram.GREEN);
-//        double blueAvg = countColorAverage(histogram.getBlueMax(), PhotoHistogram.BLUE);
-//        // euclidian distance
-//        // sqrt[ (redAvg-rank.red)^2 + (greenAvg-rank.green)^2 + (blueAvg-rank.blue)^2 ]
-        //distance = Math.sqrt(Math.pow(redAvg - rank.getRed(), 2) + Math.pow(greenAvg - rank.getGreen(), 2) + Math.pow(blueAvg - rank.getBlue(), 2));
-        
         distance = Math.sqrt(Math.pow(histogram.getRedMax() - rank.getRed(), 2) + Math.pow(histogram.getGreenMax() - rank.getGreen(), 2) + Math.pow(histogram.getBlueMax() - rank.getBlue(), 2));
-        System.out.println(photo.getSmallUrl()+" distance:"+distance);
-    }
-
-    /**
-     * Shorthand to counting average number from a range of histogram. Range is of
-     * size baseIndex-EPSILON..baseIndex+EPSILON. Boundaries (0, HIST_SIZE) are checked.
-     * @param baseIndex Center of the range of the histogram.
-     * @param color RED, GREEN or BLUE (constants from PhotoHistogram class)
-     * @return arithmetical average of all values in given range
-     */
-    private double countColorAverage(int baseIndex, int color) {
-        int sum = 0;
-        int values = 0;
-        for (int i = baseIndex - EPSILON; i < baseIndex + EPSILON; i++) {
-            if (i >= PhotoHistogram.HIST_SIZE) {
-                break;
-            }
-            if (i < 0) {
-                continue;
-            }
-            sum += (histogram.getValue(color, i) * ( 1/ (i - baseIndex == 0 ? 1 : Math.abs(i - baseIndex))) );
-            ++values;
-        }
-        //System.out.println("average:"+color+" "+sum/values);
-        return (sum / values == 0.0 ? Double.MAX_VALUE : sum / values);
     }
 
     /**

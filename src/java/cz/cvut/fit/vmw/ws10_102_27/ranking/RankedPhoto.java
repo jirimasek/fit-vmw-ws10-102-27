@@ -21,7 +21,9 @@ import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 
 /**
- * Třída <code>RankedPhoto</code>
+ * RankedPhoto is an implementation of Rankable and Comparable interfaces.
+ * It encapsulates the flickr photo and provides methods for comparing
+ * the photo to the referential color. It uses ...
  *
  * @author chadijir, masekji4
  */
@@ -44,14 +46,14 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
      */
     private PhotoHistogram histogram;
     /**
-     * Flag whether the histogram object has to be persisted after counting
+     * Flag whether the histogram object has to be persisted
      */
     private boolean saveHistogram = false;
 
     /**
-     * We try to obtain histogram form persistence layer. If not found, new
+     * We try to obtain histogram form persistence layer. If not found, new one
      * is created and saveHistogram flag is set to true.
-     * @param photo
+     * @param photo Photo object from flickr
      */
     public RankedPhoto(Photo photo) {
         this.photo = photo;
@@ -66,26 +68,28 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
     }
 
     /**
-     * Counts euclidian distance from average color to rank color and sets
-     * distance field.
+     * Counts distance. In this implementation, a simple sum of all
+     * characteristic numbers for R/G/B channels is set as the distance.
+     * The lower the number is, the closer the image is to the rank.
      * @param rank Referential color
      */
     public void countDistance(ColorRank rank) {
-        double redAvg = countColorAverage(rank.getRed(), PhotoHistogram.RED);
-        double greenAvg = countColorAverage(rank.getGreen(), PhotoHistogram.GREEN);
-        double blueAvg = countColorAverage(rank.getBlue(), PhotoHistogram.BLUE);
+        double redAvg = countColorCharacteristicNumber(rank.getRed(), PhotoHistogram.RED);
+        double greenAvg = countColorCharacteristicNumber(rank.getGreen(), PhotoHistogram.GREEN);
+        double blueAvg = countColorCharacteristicNumber(rank.getBlue(), PhotoHistogram.BLUE);
         distance = redAvg+greenAvg+blueAvg;
-        System.out.println(photo.getSmallUrl()+" distance:"+distance);
     }
 
     /**
-     * Shorthand to counting average number from a range of histogram. Range is of
+     * Shorthand to counting characteristic number from a range of histogram. Range is of
      * size baseIndex-EPSILON..baseIndex+EPSILON. Boundaries (0, HIST_SIZE) are checked.
-     * @param baseIndex Center of the range of the histogram.
+     * @param baseIndex Center of the range of the histogram. I. e. R/G/B value of referential color.
      * @param color RED, GREEN or BLUE (constants from PhotoHistogram class)
-     * @return arithmetical average of all values in given range
+     * @return characteristic number for given color. The further the value is
+     * from baseIndex, the more it adds into resulting average. If the resulting
+     * number is 0, Double.MAX_VALUE is returned instead.
      */
-    private double countColorAverage(int baseIndex, int color) {
+    private double countColorCharacteristicNumber(int baseIndex, int color) {
         int sum = 0;
         int values = 0;
         for (int i = baseIndex - EPSILON; i < baseIndex + EPSILON; i++) {
@@ -98,7 +102,6 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
             sum += (histogram.getValue(color, i) * (i - baseIndex == 0 ? 1 : Math.abs(i - baseIndex)));
             ++values;
         }
-        //System.out.println("average:"+color+" "+sum/values);
         return (sum / values == 0.0 ? Double.MAX_VALUE : sum / values);
     }
 
@@ -106,6 +109,10 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
      * If histogram is already present in DB, it is not counted. Otherwise
      * an image stream from flickr is obtained, JPEG is decoded, histogram is
      * counted and then saved into DB.
+     * JPEGDecoder was borrowed and very slightly modified from
+     * http://jcs.mobile-utopia.com/jcs/33411_JPEGDecoder.java. Thank you.
+     * It is because App Engine does not support BufferedImage. If you can, use
+     * that instead, the software will be probably faster.
      */
     public void countFeatures() {
         if (saveHistogram) {
@@ -134,7 +141,8 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
     }
 
     /**
-     * Walks through MyPixelArray and counts histogram for all values.
+     * Walks through MyPixelArray and counts histogram for all pixels and all
+     * three RGB channels.
      * @param a
      */
     private void countHistogram(MyPixelArray a) {

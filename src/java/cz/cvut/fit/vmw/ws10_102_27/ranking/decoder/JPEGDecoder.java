@@ -15,14 +15,14 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
-
+  //http://jcs.mobile-utopia.com/jcs/33411_JPEGDecoder.java
 /////////////////////////////////////////////////////////////////////////
 
 /* This decoder is based on C++-code for a Viewer ("JViewer") written and
    published by Bee-Chung Chen (http://www.cs.wisc.edu/~beechung/home/coding/index.html).
    It is intended to be used with limited Java Runtimes not inluding
    JPEG decompression like the Java Microedition (J2ME) or gcj etc.
-
+ 
    Usage:
    ======
    

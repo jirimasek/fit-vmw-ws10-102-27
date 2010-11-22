@@ -8,8 +8,8 @@ package cz.cvut.fit.vmw.ws10_102_27.ranking;
 import java.util.List;
 
 /**
- *
- * @author gizmo
+ * Simple interface. Ensures sorting capability on given subtype of Rankable.
+ * @author chadijir, masekji4
  */
 public interface Sorter<T extends Rankable> {
 

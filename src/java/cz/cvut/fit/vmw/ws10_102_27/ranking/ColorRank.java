@@ -6,8 +6,8 @@
 package cz.cvut.fit.vmw.ws10_102_27.ranking;
 
 /**
- *
- * @author gizmo
+ * Rank represented by three-channel RGB color.
+ * @author chadijir, mnaskeji4
  */
 public class ColorRank implements Rank {
 

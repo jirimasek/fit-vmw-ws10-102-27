@@ -45,11 +45,11 @@ public class PhotoHistogram {
     @NotPersistent
     public static final int BLUE = 2;
     @Persistent
-    private int[] redHistogram = new int[HIST_SIZE];
+    private double[] redHistogram = new double[HIST_SIZE];
     @Persistent
-    private int[] greenHistogram = new int[HIST_SIZE];
+    private double[] greenHistogram = new double[HIST_SIZE];
     @Persistent
-    private int[] blueHistogram = new int[HIST_SIZE];
+    private double[] blueHistogram = new double[HIST_SIZE];
 
     public PhotoHistogram() {
     }
@@ -74,13 +74,23 @@ public class PhotoHistogram {
         }
     }
 
+    public double getMax() {
+        double redmax = 0, greenmax = 0, bluemax = 0;
+        for (int i = 0; i < HIST_SIZE; i++) {
+            if (redHistogram[i] > redmax) { redmax = redHistogram[i]; }
+            if (greenHistogram[i] > greenmax) { greenmax = greenHistogram[i]; }
+            if (blueHistogram[i] > bluemax) { bluemax = blueHistogram[i]; }
+        }
+        return Math.max( Math.max(redmax, bluemax), greenmax);
+    }
+
     /**
      * Returns value of given color and index.
      * @param color
      * @param index
      * @return value
      */
-    public int getValue(int color, int index) {
+    public double getValue(int color, int index) {
         int realindex = index/(MAX_INDEX_SIZE/HIST_SIZE);
         switch (color) {
             case RED:
@@ -93,6 +103,14 @@ public class PhotoHistogram {
         return 0;
     }
 
+    public void normalize(double normalizer) {
+        for (int i = 0; i < HIST_SIZE; i++) {
+            redHistogram[i] = redHistogram[i] / normalizer;
+            greenHistogram[i] = greenHistogram[i] / normalizer;
+            blueHistogram[i] = blueHistogram[i] / normalizer;
+        }
+    }
+
     public Key getKey() {
         return key;
     }
@@ -101,27 +119,27 @@ public class PhotoHistogram {
         this.key = key;
     }
 
-    public int[] getBlueHistogram() {
+    public double[] getBlueHistogram() {
         return blueHistogram;
     }
 
-    public void setBlueHistogram(int[] blueHistogram) {
+    public void setBlueHistogram(double[] blueHistogram) {
         this.blueHistogram = blueHistogram;
     }
 
-    public int[] getGreenHistogram() {
+    public double[] getGreenHistogram() {
         return greenHistogram;
     }
 
-    public void setGreenHistogram(int[] greenHistogram) {
+    public void setGreenHistogram(double[] greenHistogram) {
         this.greenHistogram = greenHistogram;
     }
 
-    public int[] getRedHistogram() {
+    public double[] getRedHistogram() {
         return redHistogram;
     }
 
-    public void setRedHistogram(int[] redHistogram) {
+    public void setRedHistogram(double[] redHistogram) {
         this.redHistogram = redHistogram;
     }
 }

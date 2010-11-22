@@ -50,7 +50,7 @@ public class SearchServlet extends HttpServlet {
             throws ServletException, IOException {
         FlickrAPI flickrAPI = FlickrAPI.getInstance();
         try {
-            PhotoList result = flickrAPI.search(request.getParameter("q"), 25, 1);
+            PhotoList result = flickrAPI.search(request.getParameter("q"), 50, 1);
 
             String c = request.getParameter("c");
 

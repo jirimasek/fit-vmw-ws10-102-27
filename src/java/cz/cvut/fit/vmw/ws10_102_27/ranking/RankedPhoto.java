@@ -114,7 +114,7 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
 
     /**
      * Walks through MyPixelArray and counts histogram for all pixels and all
-     * three RGB channels.
+     * three RGB channels. Additionally stores max values.
      * @param a
      */
     private void countHistogram(MyPixelArray a) {

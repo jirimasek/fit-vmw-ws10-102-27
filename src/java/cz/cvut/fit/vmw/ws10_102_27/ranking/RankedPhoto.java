@@ -21,7 +21,9 @@ import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 
 /**
- * Třída <code>RankedPhoto</code>
+ * RankedPhoto is an implementation of Rankable and Comparable interfaces.
+ * It encapsulates the flickr photo and provides methods for comparing
+ * the photo to the referential color. It uses ...
  *
  * @author chadijir, masekji4
  */
@@ -44,14 +46,14 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
      */
     private PhotoHistogram histogram;
     /**
-     * Flag whether the histogram object has to be persisted after counting
+     * Flag whether the histogram object has to be persisted
      */
     private boolean saveHistogram = false;
 
     /**
-     * We try to obtain histogram form persistence layer. If not found, new
+     * We try to obtain histogram form persistence layer. If not found, new one
      * is created and saveHistogram flag is set to true.
-     * @param photo
+     * @param photo Photo object from flickr
      */
     public RankedPhoto(Photo photo) {
         this.photo = photo;
@@ -66,8 +68,9 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
     }
 
     /**
-     * Counts euclidian distance from average color to rank color and sets
-     * distance field.
+     * Counts distance. In this implementation, a simple sum of all
+     * characteristic numbers for R/G/B channels is set as the distance.
+     * The lower the number is, the closer the image is to the rank.
      * @param rank Referential color
      */
     public void countDistance(ColorRank rank) {
@@ -78,6 +81,10 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
      * If histogram is already present in DB, it is not counted. Otherwise
      * an image stream from flickr is obtained, JPEG is decoded, histogram is
      * counted and then saved into DB.
+     * JPEGDecoder was borrowed and very slightly modified from
+     * http://jcs.mobile-utopia.com/jcs/33411_JPEGDecoder.java. Thank you.
+     * It is because App Engine does not support BufferedImage. If you can, use
+     * that instead, the software will be probably faster.
      */
     public void countFeatures() {
         if (saveHistogram) {
@@ -106,7 +113,8 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
     }
 
     /**
-     * Walks through MyPixelArray and counts histogram for all values.
+     * Walks through MyPixelArray and counts histogram for all pixels and all
+     * three RGB channels.
      * @param a
      */
     private void countHistogram(MyPixelArray a) {

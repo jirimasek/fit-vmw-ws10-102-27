@@ -7,8 +7,8 @@ package cz.cvut.fit.vmw.ws10_102_27.ranking.decoder;
 import cz.cvut.fit.vmw.ws10_102_27.ranking.decoder.JPEGDecoder.PixelArray;
 
 /**
- *
- * @author gizmo
+ * Simple 2D array implementation. Serves as a storage for pixels.
+ * @author chadijir, masekji4
  */
 public class MyPixelArray implements PixelArray {
 

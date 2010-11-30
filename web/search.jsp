@@ -25,7 +25,7 @@
         <h1><a href="/"><span>Flickr - feature-based reranking</span></a></h1>
 
         <form method="get" action="/search">
-            <input id="q" name="q" type="text" value="<%= request.getParameter("q") %>" />
+            <input id="q" name="q" type="text"<% if (request.getParameter("q") != null) { %> value="<%= request.getParameter("q") %>"<% } %> />
             <input id="c" name="c" class="color" value="<% if (request.getParameter("c") != null) { %><%= request.getParameter("c") %><% } else { %>DA1549<% } %>" />
             <input id="submit" name="submit" type="submit" value=""/>
         </form>

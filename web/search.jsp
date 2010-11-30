@@ -47,7 +47,7 @@
         <% if (result != null) { %>
         <% for (Photo photo : (ArrayList<Photo>) result) { %>
         <div class="photo">
-            <a href="<%= photo.getLargeUrl() %>" title="<%= photo.getTitle() %>" rel="clearbox[gallery=<%= request.getParameter("q") %>,,title=<%= photo.getTitle() %>]"><img src="<%= photo.getSmallUrl() %>" alt="<%= photo.getTitle() %>" /></a>
+            <a href="<%= photo.getLargeUrl() %>" title="<%= photo.getTitle() %>" rel="clearbox[gallery=<%= request.getParameter("q") %>,,title=<%= photo.getTitle().replace("\"", "") %>]"><img src="<%= photo.getSmallUrl() %>" alt="<%= photo.getTitle() %>" /></a>
         </div>
         <% } %>
         <% } %>

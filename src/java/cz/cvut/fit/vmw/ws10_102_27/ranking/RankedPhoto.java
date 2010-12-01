@@ -102,7 +102,7 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
             sum += (histogram.getValue(color, i) * (i - baseIndex == 0 ? 1 : Math.abs(i - baseIndex)));
             ++values;
         }
-        return (sum == 0.0 ? Double.MAX_VALUE : sum);
+        return (sum / values == 0.0 ? Double.MAX_VALUE : sum / values);
     }
 
     /**

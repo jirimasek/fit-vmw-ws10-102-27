@@ -26,6 +26,8 @@ public class SearchServlet extends HttpServlet {
     Flickr f;
     REST rest;
 
+    public static final int SEARCH_LIMIT = 50;
+
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -50,7 +52,7 @@ public class SearchServlet extends HttpServlet {
             throws ServletException, IOException {
         FlickrAPI flickrAPI = FlickrAPI.getInstance();
         try {
-            PhotoList result = flickrAPI.search(request.getParameter("q"), 50, 1);
+            PhotoList result = flickrAPI.search(request.getParameter("q"), SEARCH_LIMIT, 1);
 
             String c = request.getParameter("c");
 

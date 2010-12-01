@@ -85,7 +85,6 @@ public class RankedPhoto implements Rankable<ColorRank>, Comparable<RankedPhoto>
             }
         }
         distance = Math.sqrt( Math.pow(maxindex - rankindex, 2) );
-
     }
 
     /**

@@ -54,35 +54,13 @@ public class SearchServlet extends HttpServlet {
 
             String c = request.getParameter("c");
 
-            ColorRank cr = null;
+            // transform color from hex to RGB
+            int color = Integer.parseInt( c.toLowerCase(), 16 );
+            int rr = (color & 0x00FF0000) >> 16;
+            int gg =(color & 0x0000FF00) >> 8;
+            int bb = (color & 0x000000FF);
+            ColorRank cr = new ColorRank(rr, gg, bb);
 
-            // Nekolikanasobny if protoze 1.5 neumi switch. Pry...
-            if (c.compareTo("red") == 0) {
-                cr = new ColorRank(204, 0, 0); //cc0000
-            } else if (c.compareTo("orange") == 0) {
-                cr = new ColorRank(251, 148, 11); //fb940b
-            } else if (c.compareTo("yellow") == 0) {
-                cr = new ColorRank(255, 255, 0); //ffff00
-            } else if (c.compareTo("green") == 0) {
-                cr = new ColorRank(0, 204, 0); //00cc00
-            } else if (c.compareTo("teal") == 0) {
-                cr = new ColorRank(3, 192, 198); //03c0c6
-            } else if (c.compareTo("blue") == 0) {
-                cr = new ColorRank(0, 0, 204); //0000cc
-            } else if (c.compareTo("purple") == 0) {
-                cr = new ColorRank(118, 44, 167); //762ca7
-            } else if (c.compareTo("pink") == 0) {
-                cr = new ColorRank(255, 152, 191); //ff98bf
-            } else if (c.compareTo("white") == 0) {
-                cr = new ColorRank(255, 255, 255); //ffffff
-            } else if (c.compareTo("gray") == 0) {
-                cr = new ColorRank(118, 118, 118); //767676
-            } else if (c.compareTo("black") == 0) {
-                cr = new ColorRank(0, 0, 0); //000000
-            } else if (c.compareTo("brown") == 0) {
-                cr = new ColorRank(136, 84, 24); //885418
-            }
-           
             if (cr != null) {
                 ColorSorter cs = new ColorSorter(result, cr);
                 List<RankedPhoto> res = cs.sort();

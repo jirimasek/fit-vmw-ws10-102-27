@@ -6,8 +6,11 @@ import com.aetrion.flickr.REST;
 import com.aetrion.flickr.photos.PhotoList;
 import com.aetrion.flickr.photos.SearchParameters;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
@@ -89,5 +92,21 @@ public class FlickrAPI {
         cache.put(key, result);
         
         return result;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public List<String> getHistory() {
+        List<String> history = new ArrayList<String>();
+
+        for (CacheKey cacheKey : cache.keySet()) {
+            history.add(cacheKey.keyword);
+        }
+
+        Collections.reverse(history);
+
+        return history;
     }
 }

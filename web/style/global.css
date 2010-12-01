@@ -1,0 +1,32 @@
+/* 
+    Document   : global
+    Created on : Nov 30, 2010, 12:38:24 AM
+    Author     : chadijir, masekji4
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+* { margin:0; padding:0; border:none; }
+
+html { background:url('../img/background.png') repeat-y; font-family:Impact, 'Techno CE', sans-serif; font-size:12px/1.55em; }
+
+h1 { float:left; width:295px; height:22px; background:url('../img/header.png'); }
+h1 a { display:block; width:280px; height:22px;}
+h1 a span { display:none; }
+
+form { float:left; width:295px; background:url('../img/form.png') no-repeat; clear:left; height:72px; }
+
+input { background:none; float:left; color:#0059d4; border:none; font-family:Impact, 'Techno CE', sans-serif; display:block; text-transform:uppercase; font-size:115%; height:18px; overflow:hidden; }
+
+input#q { margin-left:97px; width:183px; margin-top:22px; }
+input#c { margin-left:97px; width:72px; margin-top:12px; }
+input#submit { width:101px; margin-left:10px; margin-top:11px; }
+
+ul.history { float:left; width:295px; clear:left; text-align:right; list-style:none; margin-top:42px; }
+ul.history li { height:30px; }
+ul.history li.active { background:url('../img/active.png') no-repeat; }
+ul.history li a { color:#fff; margin-right:35px; text-transform:uppercase; text-decoration:none; padding-top:2px; display:block; }
+
+div.result { position:absolute; top:0; left:295px; }
+div.result div.photo { width:240px; height:240px; float:left; margin:20px; text-align:center; }
+div.result div.photo img { margin:auto; }

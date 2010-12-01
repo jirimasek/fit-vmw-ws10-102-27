@@ -16,7 +16,7 @@ h1 a span { display:none; }
 
 form { float:left; width:295px; background:url('../img/form.png') no-repeat; clear:left; height:72px; }
 
-input { background:none; float:left; color:#0059d4; border:none; font-family:Impact, 'Techno CE', sans-serif; display:block; text-transform:uppercase; font-size:130%; height:18px; overflow:hidden; }
+input { background:none; float:left; color:#0059d4; border:none; font-family:Impact, 'Techno CE', sans-serif; display:block; text-transform:uppercase; font-size:115%; height:18px; overflow:hidden; }
 
 input#q { margin-left:97px; width:183px; margin-top:22px; }
 input#c { margin-left:97px; width:72px; margin-top:12px; }
